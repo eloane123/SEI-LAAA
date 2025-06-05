@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Convite Especial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset e básico */
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      color: #5a1a26;
+      overflow-x: hidden;
+      perspective: 1200px;
+      position: relative;
+    }
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .start-button, .button, .question button, .envelope button {
+      background-color: #b83859;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 28px;
+      font-size: 18px;
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(184, 56, 89, 0.5);
+      transition: all 0.35s ease;
+      user-select: none;
+    }
+    .start-button:hover,
+    .button:hover,
+    .question button:hover,
+    .envelope button:hover {
+      background-color: #d64b6a;
+      box-shadow: 0 8px 20px rgba(214, 75, 106, 0.7);
+      transform: translateY(-3px) scale(1.05);
+    }
+    .question-container, .envelope-container {
+      text-align: center;
+    }
+    .question h1 {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 2.8rem;
+      color: #83293e;
+      margin-bottom: 15px;
+      text-shadow: 0 0 7px #ffbdd4;
+    }
+    .question p {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .question button {
+      margin: 6px;
+      padding: 12px 22px;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .envelope {
+      margin: 25px auto 0;
+      background: #fff0f5;
+      color: #a12f4d;
+      border-radius: 20px;
+      width: 360px;
+      padding: 30px 25px;
+      box-shadow: 0 10px 30px rgba(177, 51, 74, 0.4);
+      font-family: 'Dancing Script', cursive;
+      font-size: 20px;
+      user-select: none;
+    }
+    /* Carta container */
+    .carta-container {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      margin-top: 40px;
+      perspective: 1200px;
+      position: relative;
+    }
+    .carta {
+      background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+      width: 380px;
+      height: 280px;
+      border-radius: 25px;
+      padding: 40px 35px;
+      box-shadow: 0 12px 30px rgba(255, 105, 180, 0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      color: #7b1a3b;
+      font-family: 'Merriweather', serif;
+      font-size: 24px;
+      opacity: 0;
+      transform: scale(0.7);
+      animation: revelarCarta 1.6s forwards cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: visible;
+      user-select: none;
+      z-index: 10; /* texto e conteúdo acima dos corações */
+    }
+    @keyframes revelarCarta {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    /* Fotos do casal com brilho mágico */
+    .foto-casal, .foto-casal2 {
+      width: 90px;
+      height: 90px;
+      border-radius: 16px;
+      object-fit: cover;
+      box-shadow: 0 0 15px 3px rgba(255, 105, 180, 0.6);
+      margin: 8px;
+      transition: transform 0.6s ease, box-shadow 0.6s ease;
+      cursor: default;
+    }
+    .foto-casal:hover, .foto-casal2:hover {
+      transform: scale(1.15) rotate(3deg);
+      box-shadow: 0 0 25px 6px rgba(255, 105, 180, 0.85);
+    }
+    /* Container das fotos para posicionar */
+    .fotos-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+      gap: 25px;
+    }
+    /* Texto final com efeito pulsante suave */
+    .mensagem-final {
+      font-family: 'Merriweather', serif;
+      font-size: 26px;
+      color: #7b1a3b;
+      text-shadow: 0 0 8px #ff79a7;
+      animation: pulsar 3s ease-in-out infinite;
+      max-width: 340px;
+      line-height: 1.4;
+      user-select: text;
+    }
+    @keyframes pulsar {
+      0%, 100% { text-shadow: 0 0 8px #ff79a7; }
+      50% { text-shadow: 0 0 22px #ff4081; }
+    }
+    /* Coracoes flutuantes - estilo lúdico */
+    .coracao {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center;
+      background-size: contain;
+      pointer-events: none;
+      animation-name: flutuar;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      z-index: 1; /* atrás do texto */
+    }
+    @keyframes flutuar {
+      0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
+      50% { transform: translateY(-15px) translateX(5px) scale(1.2); opacity: 0.8; }
+    }
+    /* Pugs decorativos */
+    .pug {
+      position: fixed;
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      opacity: 0.7;
+      user-select: none;
+      pointer-events: none;
+      z-index: 0;
+      top: 10%;
+      left: 0%;
+      transition: transform 0.3s ease;
+    }
+    .pug.bottom-left {
+      top: 85%;
+      left: 0%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="question-container">
+    <button class="start-button" id="startBtn" onclick="mostrarPergunta()">Clique para começar</button>
+    <div class="question" id="question" style="display: none;">
+      <h1>Teste De Autenticação</h1>
+      <p>Qual é a data de aniversário do amor da sua vida?</p>
+      <button onclick="verificarResposta('27/07')">27/07</button>
+      <button onclick="verificarResposta('14/02')">30/07</button>
+      <button onclick="verificarResposta('25/12')">28/07</button>
+      <button onclick="verificarResposta('01/01')">29/07</button>
+    </div>
+  </div>
+
+  <div class="envelope-container" id="envelope-container" style="display: none;">
+    <button class="button" onclick="abrirEnvelope()">Clique para abrir</button>
+    <div class="envelope" id="envelope" style="display:none;">
+      <div class="message">
+        Oi linda da minha vida!<br><br>
+        Gostaria de ter um jantar romântico comigo?<br><br>
+        💖<br><br>
+        <button onclick="responderConvite('sim')">Sim</button>
+        <button onclick="responderConvite('nao')">Não</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="carta-container" id="cartaContainer" style="display: none;">
+    <div class="carta" id="carta">
+      <div class="fotos-wrapper">
+        <img src="Us.jpg" alt="Foto 1" class="foto-casal" />
+        <img src="sóeu,jpg.jpg" alt="Foto 2" class="foto-casal2" />
+      </div>
+      <div class="mensagem-final" id="mensagemFinal">
+        Uhull hehe, te espero dia 14/06 às 20h na minha casa 💖
+      </div>
+    </div>
+  </div>
+
+  <!-- Pugs andando -->
+  <img src="pug.png" alt="Pug" class="pug top-left" id="pug1" />
+  <img src="pug.png" alt="Pug" class="pug bottom-left" id="pug2" />
+
+  <!-- Áudio para tocar na carta -->
+  <audio id="musica" src="Cristiano Araújo - Caso Indefinido (DVD In The Cities)[Video Oficial] [YeqgMW1_gA4].mp3" loop></audio>
+
+  <script>
+    function mostrarPergunta() {
+      document.getElementById('startBtn').style.display = 'none';
+      document.getElementById('question').style.display = 'block';
+    }
+  
+    function verificarResposta(resposta) {
+      if (resposta === '27/07') {
+        document.getElementById('question').style.display = 'none';
+        document.getElementById('envelope-container').style.display = 'block';
+      } else {
+        alert('Ops! Tente novamente!');
+      }
+    }
+
+    function abrirEnvelope() {
+      const envelopeBtn = document.querySelector('.envelope-container > button');
+      envelopeBtn.style.display = 'none';
+      document.getElementById('envelope').style.display = 'block';
+    }
+
+    // Função para criar corações flutuantes só na parte superior da carta
+    function criarCoracoesFlutuantes() {
+      const carta = document.getElementById('carta');
+      const numCoracoes = 12;
+      for(let i = 0; i < numCoracoes; i++) {
+        const coracao = document.createElement('div');
+        coracao.classList.add('coracao');
+        // posição horizontal aleatória dentro da carta
+        coracao.style.left = Math.random() * (carta.offsetWidth - 20) + 'px';
+        // limitar posição vertical para parte superior (ex: 0 a 60px)
+        coracao.style.top = Math.random() * 60 + 'px';
+        // animação com duração e delay variados para parecer natural
+        coracao.style.animationDuration = (3 + Math.random() * 3) + 's';
+        coracao.style.animationDelay = (Math.random() * 3) + 's';
+        carta.appendChild(coracao);
+      }
+    }
+
+    function responderConvite(resposta) {
+      if(resposta === 'sim') {
+        document.getElementById('envelope-container').style.display = 'none';
+        const cartaContainer = document.getElementById('cartaContainer');
+        cartaContainer.style.display = 'flex';
+
+        criarCoracoesFlutuantes();
+
+        // tocar música com fade in
+        const musica = document.getElementById('musica');
+        musica.volume = 0;
+        musica.play();
+
+        let volume = 0;
+        const fadeIn = setInterval(() => {
+          if(volume < 0.2){
+            volume += 0.01;
+            musica.volume = volume;
+          } else {
+            clearInterval(fadeIn);
+          }
+        }, 150);
+
+      } else {
+        alert('Tá maluca porra?');
+        location.reload();
+      }
+    }
+
+    // Animação simples para pugs andarem na horizontal pela tela
+    function animarPugs() {
+      const pug1 = document.getElementById('pug1');
+      const pug2 = document.getElementById('pug2');
+
+      let pug1Pos = 0;
+      let pug1Direcao = 1; // 1 = direita, -1 = esquerda
+      let pug2Pos = 0;
+      let pug2Direcao = 1;
+
+      const velocidade = 1; // pixels por frame
+      const limiteDireita = window.innerWidth - pug1.offsetWidth;
+      const limiteEsquerda = 0;
+
+      function mover() {
+        // Atualiza posição pug1
+        pug1Pos += velocidade * pug1Direcao;
+        if(pug1Pos >= limiteDireita) pug1Direcao = -1;
+        if(pug1Pos <= limiteEsquerda) pug1Direcao = 1;
+        pug1.style.left = pug1Pos + 'px';
+
+        // Atualiza posição pug2 (movendo mais lento para variar)
+        pug2Pos += velocidade * 0.6 * pug2Direcao;
+        if(pug2Pos >= limiteDireita) pug2Direcao = -1;
+        if(pug2Pos <= limiteEsquerda) pug2Direcao = 1;
+        pug2.style.left = pug2Pos + 'px';
+
+        requestAnimationFrame(mover);
+      }
+
+      mover();
+    }
+
+    animarPugs();
+  </script>
+
+</body>
+</html>
