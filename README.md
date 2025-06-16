@@ -34,4 +34,22 @@ Este é um projeto de cartão de convite romântico desenvolvido com **HTML**, *
 ---
 
 ## 📂 Estrutura do Projeto
+📁 convite-romantico/
+├── index.html
+├── style.css
+├── script.js
+├── img/
+│ ├── pug1.png
+│ └── pug2.png
+├── audio/
+│ └── musica-romantica.mp3 (opcional)
+└── README.md
+## 🛠️ Como Usar
 
+1. Clone ou baixe este repositório:
+   ```bash
+   git clone https://github.com/seuusuario/convite-romantico.git
+Abra o arquivo index.html no seu navegador.
+
+## 📬 Licença
+Este projeto é livre para uso pessoal. Se desejar divulgar ou publicar, mantenha os créditos de criação. ✨
